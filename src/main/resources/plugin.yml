@@ -1,0 +1,7 @@
+name: ${project.name}
+version: ${project.version}
+description: ${project.description}
+main: com.github.puregero.hidespectators.HideSpectators
+author: PureGero
+website: https://github.com/PureGero/hide-spectators
+api-version: 1.20
