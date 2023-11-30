@@ -27,18 +27,12 @@ public class HideSpectatorPacketIntercepter extends ChannelDuplexHandler {
         this.player = player;
     }
 
-    private Set<Class> sentPackets = new HashSet<>();
-
     private boolean filterPacket(ChannelHandlerContext ctx, Object msg) {
-        if (sentPackets.add(msg.getClass())) System.out.println(msg);
-
         if (msg instanceof ClientboundAddPlayerPacket addPlayerPacket) {
             shownPlayers.add(addPlayerPacket.getEntityId());
             Player shownPlayer = plugin.getServer().getPlayer(addPlayerPacket.getPlayerId());
-            System.out.println("Sending " + shownPlayer.getName() + " to " + player.getName());
             if (shownPlayer != null && shownPlayer.getGameMode() == org.bukkit.GameMode.SPECTATOR) {
                 // Don't show spectators
-                System.out.println("Hiding " + shownPlayer.getName() + " from " + player.getName());
                 hiddenPlayers.add(addPlayerPacket.getEntityId());
                 return false;
             }
