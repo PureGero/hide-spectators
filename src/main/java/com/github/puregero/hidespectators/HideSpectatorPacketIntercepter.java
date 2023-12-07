@@ -12,6 +12,7 @@ import org.bukkit.craftbukkit.v1_20_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.StreamSupport;
 
@@ -51,7 +52,8 @@ public class HideSpectatorPacketIntercepter extends ChannelDuplexHandler {
                     if (shownPlayer != null && entry.gameMode() != GameType.SPECTATOR && hiddenPlayers.contains(shownPlayer.getEntityId())) {
                         // Show new non-spectator
                         hiddenPlayers.remove(shownPlayer.getEntityId());
-                        ((CraftPlayer) shownPlayer).getHandle().tracker.serverEntity.sendPairingData(((CraftPlayer) player).getHandle(), ctx::write);
+                        Optional.ofNullable(((CraftPlayer) shownPlayer).getHandle().tracker)
+                                .ifPresent(tracker -> tracker.serverEntity.sendPairingData(((CraftPlayer) player).getHandle(), ctx::write));
                     }
                 });
             }
